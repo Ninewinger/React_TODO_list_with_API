@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 
 function Todo() {
-    const [todo, setTodo] = useState([]);
+    const [todo, setTodo] = useState(null);
     console.log(todo)
 
     const lista = todo.map((todo, i) => {
         return <li className="list" key={i}>{todo}<button className="close" onClick={() => removeTask(i)}>X</button></li>
+    })
+
+    useEffect(() => {
+        fetch("http://localhost:4000/todo")
+        .then(res => data.json)
+        .then( data => {
+            setTodo(data)
+        },[])
     })
 
     const handleKeypress = e => {
