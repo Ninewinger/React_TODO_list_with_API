@@ -2,34 +2,34 @@ import React, { useState, useEffect } from 'react';
 
 function Todo() {
     const [todo, setTodo] = useState(null);
-    console.log(todo)
-    const [url] = "http://localhost:4000/todo";
+    const [url, setUrl] = useState("http://localhost:4000/todo");
 
-    const lista = todo.map((todo, i) => {
-        return <li className="list" key={i}>{todo}<button className="close" onClick={() => removeTodo(todo, i)}>X</button></li>
-    })
 
     useEffect(() => {
         getTodo();
     }, [])
 
     const getTodo = () => {
-        fetch("http://localhost:4000/todo")
-            .then(res => res.json)
+        fetch(url)
+            .then(res => res.json())
             .then(data => {
+                console.log(data)
                 setTodo(data)
             })
     }
+    /*     const lista = todo.map((todo, i) => {
+            return <li className="list" key={i}>{todo}<button className="close" onClick={() => removeTodo(todo, i)}>X</button></li>
+        }) */
 
     const createTodo = (todo) => {
-        fetch("http://localhost:4000/todo", {
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(todo)
         })
-            .then(res => res.json)
+            .then(res => res.json())
             .then(data => {
                 setTodo(data)
             })
@@ -60,7 +60,7 @@ function Todo() {
             e.target.value = ""
         }
     };
-
+/* 
     function question() {
         if (todo.length === 0) {
             return "No tasks, add a task"
@@ -69,17 +69,19 @@ function Todo() {
             return "what need to be done"
         }
     }
-
+ */
 
     return (
         <>
             <h1>todos</h1>
             <div id="contenedor">
-                <input id="" type="text" placeholder={question()} onKeyUp={handleKeypress} />
-                {todo && <ul>
-                    {lista}
-                    <li id="itemsLeft">{todo.length} items left</li>
-                </ul>}
+                <input type="text" /* placeholder={question()} */ onKeyUp={handleKeypress} />
+                <ul>
+                   {!!todo && todo.length>0 && todo.map((todo, i) => {
+                        return <li className="list" key={i}>{todo.todo}<button className="close" onClick={() => removeTodo(todo, i)}>X</button></li>
+                    })}
+                    <li id="itemsLeft">{!!todo && todo.length} items left</li>
+                </ul>
             </div>
         </>
     );
