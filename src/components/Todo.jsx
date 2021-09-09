@@ -31,13 +31,13 @@ function Todo() {
             })
     }
 
-    const createTodo = (todo) => {
+    const updateTodo = (todo) => {
         fetch(url, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify([todo])
+            body: JSON.stringify(todo)
         })
             .then(res => res.json())
             .then(data => {
@@ -47,31 +47,22 @@ function Todo() {
             })
     }
 
-    const removeTodo = (todo, id) => {
-        fetch(`${url}/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(todo)
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-
-                if (data.id) {
-                    getTodo();
-                }
-            })
-            .catch((error) => console.log(error))
-    }
-
     const handleKeypress = e => {
         if (e.keyCode === 13 && e.target.value !== "") {
-            let td = { label: e.target.value, done: false }
-            createTodo(td)
+            let newTodo = [...todo].concat({ label: e.target.value, done: false })
+            updateTodo(newTodo)
             e.target.value = ""
         }
+    };
+
+    const handleDelete = i => {
+        var array = [...todo];
+        console.log(i)
+        array.splice(i, 1);
+        console.log(array)
+        updateTodo(array)
+
+
     };
 
     return (
@@ -81,9 +72,9 @@ function Todo() {
                 <input type="text" placeholder={!!todo && todo.length === 0 ? "No tasks, add a task" : "what need to be done"} onKeyUp={handleKeypress} />
                 <ul>
                     {!!todo && todo.length > 0 && todo.map((todo, i) => {
-                        return <li className="list" key={i}>{todo.label}<button className="close" onClick={() => removeTodo(todo, i)}>X</button></li>
+                        return <li className="list" key={i}>{todo.label}<button className="close" onClick={() => handleDelete(i)}>X</button></li>
                     })}
-                    <li id="itemsLeft">{ } items left</li>
+                    <li id="itemsLeft">{!!todo && todo.length} items left</li>
                 </ul>
             </div>
         </>
