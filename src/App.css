@@ -68,3 +68,11 @@ body {
   background-size: cover;
 }
 
+.rall {
+  padding: 7px;
+  border: none;
+  background-color: rgb(245, 189, 189);
+  border-radius: 7px;
+  font-weight: bold;
+  font-size: 10px;
+}

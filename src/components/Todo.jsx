@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 function Todo() {
     const [todo, setTodo] = useState(null);
-    const [url, setUrl] = useState("https://assets.breatheco.de/apis/fake/todos/user/ninewinger");
+    const [url, setUrl] = useState("https://assets.breatheco.de/apis/fake/todos/user/Ninewinger");
 
     useEffect(() => {
         getTodo();
@@ -18,7 +18,7 @@ function Todo() {
     }
 
     const createUser = () => {
-        fetch("https://assets.breatheco.de/apis/fake/todos/user/ninewinger", {
+        fetch("https://assets.breatheco.de/apis/fake/todos/user/Ninewinger", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -61,9 +61,12 @@ function Todo() {
         array.splice(i, 1);
         console.log(array)
         updateTodo(array)
-
-
     };
+
+    function removeAll(){
+        setTodo([])
+    }
+
 
     return (
         <>
@@ -75,6 +78,7 @@ function Todo() {
                         return <li className="list" key={i}>{todo.label}<button className="close" onClick={() => handleDelete(i)}>X</button></li>
                     })}
                     <li id="itemsLeft">{!!todo && todo.length} items left</li>
+                    <button className="rall" onClick={() => removeAll()}>Remove all tasks</button>
                 </ul>
             </div>
         </>
